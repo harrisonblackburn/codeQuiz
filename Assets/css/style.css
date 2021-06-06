@@ -16,9 +16,13 @@ main {
 };
 
 #startButton {
-    display:flex; 
+    display: flex; 
     justify-content: center;
     align-items: center;
+    background-color:rgb(143, 233, 131);
+    font-size: 50px; 
+    padding: 15px; 
+    border-radius: 5px;
 
 };
 

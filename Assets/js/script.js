@@ -2,6 +2,7 @@ var startButton = document.getElementById("startButton");
 var button = document.getElementById("button");
 var timer = document.getElementById("timer");
 var questionCard = document.getElementById("questionCard");
+var h2quest = document.getElementById("h2quest");
 var answerList = document.getElementById("answerList");
 var firstAnswer = document.getElementById("firstAnswer");
 var secondAnswer = document.getElementById("secondAnswer");
@@ -13,6 +14,7 @@ var finalScoreForm = document.getElementById("finalScoreForm");
 var userFinal = document.getElementById("userFinal"); 
 var initialsInput = document.getElementById("initialsInput");
 var formSubmission = document.getElementById("formSubmission");
+var header = document.getElementById("header");
 
 var questionCount = 0; 
 var answerCount = 0; 
@@ -21,6 +23,7 @@ var correctCount = 0;
 var questionArray = [
     {
         question: "String values must be enclosed within ___ when being assigned to variables.",
+        
         
         firstAnswer: {
             content: "commas", 
@@ -43,7 +46,8 @@ var questionArray = [
         },
     
     
-        },
+        
+    },
     {
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
         
@@ -68,7 +72,8 @@ var questionArray = [
         },
     
     
-        },
+        
+    },
     {
         question: "Commonly used data types DO NOT include:",
         
@@ -146,7 +151,7 @@ var questionArray = [
         },
     {
         question: "String values must be enclosed within ____ when being assigned to variables",
-        
+       
         firstAnswer: {
             content: "commas", 
             correct: false
@@ -169,7 +174,7 @@ var questionArray = [
     
     
         },
-];
+    ]
 
 var timeRemaining = 25; 
 
@@ -187,4 +192,102 @@ function countDown(){
             endGame();
         }
         }, 1000)
+    }
+
+    function pageLoad() {
+        questionCard.style.display = "none"; 
+        alert.style.display = "none";
+        finalScore.style.display = "none";
+    }; 
+
+    startButton.addEventListener("click", () => {
+        header.style.display = "none";
+        startGame();
+        countDown();
+    } 
+    );
+
+    function startGame() {
+        questionCard.style.display = "block"
+        loadQuestion()
+    }
+
+    pageLoad();
+
+    function loadQuestion(){
+        h2quest.innerHTML = `${questionArray[questionCount].question}`
+        firstAnswer.innerHTML = `${questionArray[questionCount].firstAnswer.content}`
+        firstAnswer.setAttribute(
+            "data correct", 
+            questionArray[questionCount].firstAnswer.correct
+        )
+        secondAnswer.innerHTML = `${questionArray[questionCount].secondAnswer.content}`
+        secondAnswer.setAttribute(
+            "data correct", 
+            questionArray[questionCount].secondAnswer.correct
+        )
+        thirdAnswer.innerHTML = `${questionArray[questionCount].thirdAnswer.content}`
+
+        thirdAnswer.setAttribute(
+            "data correct", 
+            questionArray[questionCount].thirdAnswer.correct
+        )
+        fourthAnswer.innerHTML = `${questionArray[questionCount].fourthAnswer.content}`
+        fourthAnswer.setAttribute(
+            "data correct", 
+            questionArray[questionCount].fourthAnswer.correct
+        )
+
+        questionCount += 1
+    };
+
+    function removeAlert() {
+        alert.style.display = "none"
+    }; 
+
+    function answerAlert(truefalse) {
+        if (truefalse) {
+            alert.style.display = "block"
+            alert.setAttribute("class", "right")
+            alert.textContent = "CORRECT!"
+        }else if (!truefalse) {
+            alert.style.display = "block"
+            alert.setAttribute("class", "wrong")
+            alert.textContent= "WRONG!"
+        }
+    };
+
+    function answerHandler(event) {
+        var answerChosen = event.target.dataset.correct
+        if (answerChosen === "true") {
+            correctCount++
+            answerCount +=1 
+            answerAlert(true)
+            setTimeout(removeAlert, 500)
+
+            if (questionCount != questionArray.length) {
+                loadQuestion()
+            } else {
+                setTimeout(endGame, 500)
+            }
+        }else if (answerChosen === "false") {
+            correctCount --
+            timeRemaining -= 2
+            answerCount += 1
+            answerAlert(false)
+            setTimeout(removeAlert, 500)
+
+            if (questionCount != questionArray.length) {
+                loadQuestion()
+            }else {
+                setTimeout(endGame, 500)
+            }
+        }
+    };
+
+    function endGame() {
+        questionCard.style.display = "none";
+        alert.style.display = "none";
+        finalScore.style.display = "none";
+        userFinal.innerHTML = `Your score is ${correctCount}`
     }
