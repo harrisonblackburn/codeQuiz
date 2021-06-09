@@ -134,7 +134,7 @@ function displayScores () {
         let storedScore = obj.score; 
         let results = document.createElement("p");
         results.innerText = `${initials}: ${storedScore}`; 
-        scoreCard.append(results)
+        scoreCard.appendChild(results)
 
     })
 }
